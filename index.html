@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Permit to Work System</title>
+  <!-- Favicons & PWA -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+  <link rel="manifest" href="assets/manifest.json" />
+  <meta name="theme-color" content="#EE4D2D" />
+  <meta name="description" content="Dynamic Permit to Work management system for WAH, CS, LOTO, Hot Work and Electrical permits." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Excel library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════ TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">PTW System</span>
+          <span class="brand-sub">Permit to Work</span>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-outline-white topbar-export-btn" onclick="PTW.exportExcel()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Export Excel
+        </button>
+        <button class="btn btn-white" onclick="PTW.openNewPermitModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New Permit
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <!-- ═══════════════════════════════════════════════ SIDEBAR -->
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <span class="nav-section-label">Overview</span>
+          <button class="nav-item active" data-page="dashboard" onclick="PTW.showPage('dashboard', this)">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            Dashboard
+          </button>
+          <button class="nav-item" data-page="all-permits" onclick="PTW.showPage('all-permits', this)">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            All Permits
+            <span class="nav-badge" id="allPermitsBadge" style="display:none">0</span>
+          </button>
+          <button class="nav-item" data-page="approvals" onclick="PTW.showPage('approvals', this)">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+            Approvals
+            <span class="nav-badge nav-badge--urgent" id="approvalsBadge" style="display:none">0</span>
+          </button>
+        </div>
+        <div class="nav-section">
+          <span class="nav-section-label">Permit Types</span>
+          <button class="nav-item nav-item--type" data-page="type-WAH" onclick="PTW.showPage('type-WAH', this)">
+            <span class="type-dot" style="background:var(--wah)"></span>
+            Work at Height
+          </button>
+          <button class="nav-item nav-item--type" data-page="type-CS" onclick="PTW.showPage('type-CS', this)">
+            <span class="type-dot" style="background:var(--cs)"></span>
+            Confined Space
+          </button>
+          <button class="nav-item nav-item--type" data-page="type-LOTO" onclick="PTW.showPage('type-LOTO', this)">
+            <span class="type-dot" style="background:var(--loto)"></span>
+            LOTO
+          </button>
+          <button class="nav-item nav-item--type" data-page="type-HW" onclick="PTW.showPage('type-HW', this)">
+            <span class="type-dot" style="background:var(--hw)"></span>
+            Hot Work
+          </button>
+          <button class="nav-item nav-item--type" data-page="type-ELEC" onclick="PTW.showPage('type-ELEC', this)">
+            <span class="type-dot" style="background:var(--elec)"></span>
+            Electrical
+          </button>
+        </div>
+        <div class="nav-section">
+          <span class="nav-section-label">System</span>
+          <button class="nav-item" data-page="analytics" onclick="PTW.showPage('analytics', this)">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+            Analytics
+          </button>
+          <button class="nav-item" data-page="settings" onclick="PTW.showPage('settings', this)">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            Configuration
+          </button>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-text">PTW System v2.0</div>
+        <div class="sidebar-footer-sub">GitHub Pages Ready</div>
+      </div>
+    </aside>
+
+    <!-- ═══════════════════════════════════════════════════ MAIN -->
+    <main class="main-content" id="mainContent">
+
+      <!-- PAGE: DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle" id="dashDate"></p>
+          </div>
+          <button class="btn btn-primary" onclick="PTW.openNewPermitModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Permit
+          </button>
+        </div>
+
+        <div class="stats-row" id="dashStats"></div>
+
+        <div class="dashboard-grid">
+          <div class="card span-2">
+            <div class="card-header">
+              <span class="card-title">Recent Permits</span>
+              <button class="btn btn-ghost btn-sm" onclick="PTW.showPage('all-permits', document.querySelector('[data-page=all-permits]'))">View All →</button>
+            </div>
+            <div class="table-wrap">
+              <table class="ptw-table" id="recentTable">
+                <thead><tr><th>Permit ID</th><th>Type</th><th>Requester</th><th>Company</th><th>Location</th><th>Risk</th><th>Status</th><th>Date</th></tr></thead>
+                <tbody id="recentTableBody"><tr><td colspan="8" class="empty-row">No permits yet. Create your first permit using the button above.</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">By Permit Type</span></div>
+            <div class="card-body" id="typeBreakdown"></div>
+          </div>
+        </div>
+
+        <div class="card" id="pendingCard" style="margin-top:20px">
+          <div class="card-header">
+            <span class="card-title">⏳ Pending Approval</span>
+            <span class="pill pill--amber" id="pendingCount">0 pending</span>
+          </div>
+          <div class="card-body" id="pendingList">
+            <div class="empty-state-sm">No permits awaiting approval.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: ALL PERMITS -->
+      <div class="page" id="page-all-permits">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">All Permits</h1>
+            <p class="page-subtitle">Full permit register</p>
+          </div>
+          <div class="header-controls">
+            <div class="search-box">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" placeholder="Search permits…" id="permitSearch" oninput="PTW.renderAllPermits()" />
+            </div>
+            <div class="filter-tabs" id="statusTabs">
+              <button class="filter-tab active" onclick="PTW.setFilter('all',this)">All</button>
+              <button class="filter-tab" onclick="PTW.setFilter('pending',this)">Pending</button>
+              <button class="filter-tab" onclick="PTW.setFilter('approved',this)">Approved</button>
+              <button class="filter-tab" onclick="PTW.setFilter('active',this)">Active</button>
+              <button class="filter-tab" onclick="PTW.setFilter('closed',this)">Closed</button>
+              <button class="filter-tab" onclick="PTW.setFilter('rejected',this)">Rejected</button>
+            </div>
+            <button class="btn btn-primary" onclick="PTW.openNewPermitModal()">+ New Permit</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table class="ptw-table">
+              <thead><tr><th>Permit ID</th><th>Type</th><th>Requester</th><th>Company</th><th>Location</th><th>Risk</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+              <tbody id="allPermitsBody"><tr><td colspan="9" class="empty-row">No permits found.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: APPROVALS -->
+      <div class="page" id="page-approvals">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Approval Queue</h1>
+            <p class="page-subtitle">Review and process permit approvals</p>
+          </div>
+        </div>
+        <div id="approvalsContent">
+          <div class="empty-state"><div class="empty-icon">✅</div><div class="empty-title">All clear!</div><p>No permits awaiting approval.</p></div>
+        </div>
+      </div>
+
+      <!-- PAGE: TYPE VIEWS (WAH, CS, LOTO, HW, ELEC) -->
+      <div class="page" id="page-type-WAH">
+        <div class="page-header page-header--typed" style="--type-color:var(--wah)">
+          <div class="page-header-type-tag"><span class="type-dot-lg" style="background:var(--wah)"></span> Work at Height Permits</div>
+          <button class="btn btn-primary" onclick="PTW.openNewPermitModal('WAH')">+ New WAH Permit</button>
+        </div>
+        <div id="workflow-WAH" class="workflow-diagram"></div>
+        <div class="card" style="margin-top:20px"><div class="table-wrap"><table class="ptw-table"><thead><tr><th>Permit ID</th><th>Requester</th><th>Company</th><th>Height (m)</th><th>Equipment</th><th>Risk</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody id="typeBody-WAH"><tr><td colspan="9" class="empty-row">No Work at Height permits yet.</td></tr></tbody></table></div></div>
+      </div>
+
+      <div class="page" id="page-type-CS">
+        <div class="page-header page-header--typed" style="--type-color:var(--cs)">
+          <div class="page-header-type-tag"><span class="type-dot-lg" style="background:var(--cs)"></span> Confined Space Permits</div>
+          <button class="btn btn-primary" onclick="PTW.openNewPermitModal('CS')">+ New CS Permit</button>
+        </div>
+        <div id="workflow-CS" class="workflow-diagram"></div>
+        <div class="card" style="margin-top:20px"><div class="table-wrap"><table class="ptw-table"><thead><tr><th>Permit ID</th><th>Requester</th><th>Company</th><th>Space Type</th><th>Atm. Testing</th><th>Risk</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody id="typeBody-CS"><tr><td colspan="9" class="empty-row">No Confined Space permits yet.</td></tr></tbody></table></div></div>
+      </div>
+
+      <div class="page" id="page-type-LOTO">
+        <div class="page-header page-header--typed" style="--type-color:var(--loto)">
+          <div class="page-header-type-tag"><span class="type-dot-lg" style="background:var(--loto)"></span> LOTO Permits</div>
+          <button class="btn btn-primary" onclick="PTW.openNewPermitModal('LOTO')">+ New LOTO Permit</button>
+        </div>
+        <div id="workflow-LOTO" class="workflow-diagram"></div>
+        <div class="card" style="margin-top:20px"><div class="table-wrap"><table class="ptw-table"><thead><tr><th>Permit ID</th><th>Requester</th><th>Company</th><th>Energy Sources</th><th>Voltage</th><th>Risk</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody id="typeBody-LOTO"><tr><td colspan="9" class="empty-row">No LOTO permits yet.</td></tr></tbody></table></div></div>
+      </div>
+
+      <div class="page" id="page-type-HW">
+        <div class="page-header page-header--typed" style="--type-color:var(--hw)">
+          <div class="page-header-type-tag"><span class="type-dot-lg" style="background:var(--hw)"></span> Hot Work Permits</div>
+          <button class="btn btn-primary" onclick="PTW.openNewPermitModal('HW')">+ New HW Permit</button>
+        </div>
+        <div id="workflow-HW" class="workflow-diagram"></div>
+        <div class="card" style="margin-top:20px"><div class="table-wrap"><table class="ptw-table"><thead><tr><th>Permit ID</th><th>Requester</th><th>Company</th><th>Work Type</th><th>Fire Watch</th><th>Risk</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody id="typeBody-HW"><tr><td colspan="9" class="empty-row">No Hot Work permits yet.</td></tr></tbody></table></div></div>
+      </div>
+
+      <div class="page" id="page-type-ELEC">
+        <div class="page-header page-header--typed" style="--type-color:var(--elec)">
+          <div class="page-header-type-tag"><span class="type-dot-lg" style="background:var(--elec)"></span> Electrical Work Permits</div>
+          <button class="btn btn-primary" onclick="PTW.openNewPermitModal('ELEC')">+ New Electrical Permit</button>
+        </div>
+        <div id="workflow-ELEC" class="workflow-diagram"></div>
+        <div class="card" style="margin-top:20px"><div class="table-wrap"><table class="ptw-table"><thead><tr><th>Permit ID</th><th>Requester</th><th>Company</th><th>Voltage</th><th>Panel/Circuit</th><th>Risk</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody id="typeBody-ELEC"><tr><td colspan="9" class="empty-row">No Electrical Work permits yet.</td></tr></tbody></table></div></div>
+      </div>
+
+      <!-- PAGE: ANALYTICS -->
+      <div class="page" id="page-analytics">
+        <div class="page-header">
+          <div><h1 class="page-title">Analytics</h1><p class="page-subtitle">Safety metrics and permit statistics</p></div>
+          <button class="btn btn-secondary" onclick="PTW.exportExcel()">📤 Export Excel</button>
+        </div>
+        <div class="stats-row" id="analyticsStats"></div>
+        <div class="dashboard-grid" style="margin-top:20px">
+          <div class="card"><div class="card-header"><span class="card-title">Permits by Type</span></div><div class="card-body" id="analyticsTypeChart"></div></div>
+          <div class="card"><div class="card-header"><span class="card-title">Permits by Status</span></div><div class="card-body" id="analyticsStatusChart"></div></div>
+          <div class="card"><div class="card-header"><span class="card-title">Risk Distribution</span></div><div class="card-body" id="analyticsRiskChart"></div></div>
+        </div>
+      </div>
+
+      <!-- PAGE: SETTINGS -->
+      <div class="page" id="page-settings">
+        <div class="page-header"><div><h1 class="page-title">Configuration</h1><p class="page-subtitle">Approval workflows and routing rules</p></div></div>
+        <div class="settings-grid" id="settingsContent"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ MODALS -->
+
+  <!-- NEW PERMIT MODAL -->
+  <div class="modal-overlay" id="newPermitModal" style="display:none" onclick="PTW.modalOverlayClick(event,'newPermitModal')">
+    <div class="modal modal--wide">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <div class="modal-icon" id="newPermitIcon">📋</div>
+          <div>
+            <div class="modal-title" id="newPermitTitle">New Permit to Work</div>
+            <div class="modal-subtitle" id="newPermitSubtitle">Complete all required fields</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="PTW.closeModal('newPermitModal')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- STEP PROGRESS -->
+      <div class="step-progress" id="stepProgress">
+        <div class="step-item active" id="sp1"><div class="step-num">1</div><div class="step-lbl">Type & Info</div></div>
+        <div class="step-line" id="sl1"></div>
+        <div class="step-item" id="sp2"><div class="step-num">2</div><div class="step-lbl">Risk & Hazards</div></div>
+        <div class="step-line" id="sl2"></div>
+        <div class="step-item" id="sp3"><div class="step-num">3</div><div class="step-lbl">Checklist</div></div>
+        <div class="step-line" id="sl3"></div>
+        <div class="step-item" id="sp4"><div class="step-num">4</div><div class="step-lbl">Sign & Submit</div></div>
+      </div>
+
+      <div class="modal-body">
+        <!-- STEP 1 -->
+        <div class="step-panel active" id="panel1">
+          <div class="section-label">Select Permit Type</div>
+          <div class="type-picker" id="typePicker">
+            <div class="type-card" data-type="WAH" onclick="PTW.selectType('WAH',this)">
+              <div class="type-card-icon">🪜</div>
+              <div class="type-card-name">Work at Height</div>
+              <div class="type-card-desc">≥ 1.8 m elevation</div>
+              <div class="type-card-workflow">3-stage approval</div>
+            </div>
+            <div class="type-card" data-type="CS" onclick="PTW.selectType('CS',this)">
+              <div class="type-card-icon">🕳️</div>
+              <div class="type-card-name">Confined Space</div>
+              <div class="type-card-desc">Enclosed areas</div>
+              <div class="type-card-workflow">3-stage approval</div>
+            </div>
+            <div class="type-card" data-type="LOTO" onclick="PTW.selectType('LOTO',this)">
+              <div class="type-card-icon">🔒</div>
+              <div class="type-card-name">LOTO</div>
+              <div class="type-card-desc">Lockout / Tagout</div>
+              <div class="type-card-workflow">2-stage approval</div>
+            </div>
+            <div class="type-card" data-type="HW" onclick="PTW.selectType('HW',this)">
+              <div class="type-card-icon">🔥</div>
+              <div class="type-card-name">Hot Work</div>
+              <div class="type-card-desc">Welding / cutting</div>
+              <div class="type-card-workflow">2-stage approval</div>
+            </div>
+            <div class="type-card" data-type="ELEC" onclick="PTW.selectType('ELEC',this)">
+              <div class="type-card-icon">⚡</div>
+              <div class="type-card-name">Electrical</div>
+              <div class="type-card-desc">Live / isolation work</div>
+              <div class="type-card-workflow">3-stage approval</div>
+            </div>
+          </div>
+          <div class="routing-notice" id="routingNotice" style="display:none"></div>
+
+          <div class="section-label" style="margin-top:24px">Person Submitting This Permit</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Full Name <span class="req">*</span></label>
+              <input class="form-input" type="text" id="f_name" placeholder="Your full name" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Company / Organisation <span class="req">*</span></label>
+              <input class="form-input" type="text" id="f_company" placeholder="Your company or contractor name" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contact Number</label>
+              <input class="form-input" type="text" id="f_contact" placeholder="+65 9xxx xxxx" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input class="form-input" type="email" id="f_email" placeholder="email@company.com" />
+            </div>
+          </div>
+
+          <div class="section-label" style="margin-top:24px">Work Details</div>
+          <div class="form-grid">
+            <div class="form-group span-2">
+              <label class="form-label">Work Description <span class="req">*</span></label>
+              <textarea class="form-input" id="f_desc" rows="3" placeholder="Describe the work to be performed in detail…"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Location / Area <span class="req">*</span></label>
+              <input class="form-input" type="text" id="f_location" placeholder="e.g. Rooftop Level 3, Bay 4" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Site Supervisor</label>
+              <input class="form-input" type="text" id="f_supervisor" placeholder="Name of on-site supervisor" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Number of Workers</label>
+              <input class="form-input" type="number" id="f_workers" min="1" value="1" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Worker Names / IDs</label>
+              <input class="form-input" type="text" id="f_workerNames" placeholder="Ali, Ravi, John (or badge IDs)" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Planned Start</label>
+              <div class="input-row">
+                <input class="form-input" type="date" id="f_startDate" />
+                <input class="form-input" type="time" id="f_startTime" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Planned End</label>
+              <div class="input-row">
+                <input class="form-input" type="date" id="f_endDate" />
+                <input class="form-input" type="time" id="f_endTime" />
+              </div>
+            </div>
+          </div>
+
+          <!-- TYPE-SPECIFIC FIELDS -->
+          <div id="typeFields"></div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step-panel" id="panel2">
+          <div class="section-label">Risk Assessment Matrix</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Likelihood (1–5)</label>
+              <select class="form-input" id="f_likelihood" onchange="PTW.updateRisk()">
+                <option value="1">1 — Rare</option>
+                <option value="2">2 — Unlikely</option>
+                <option value="3" selected>3 — Possible</option>
+                <option value="4">4 — Likely</option>
+                <option value="5">5 — Almost Certain</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Consequence (1–5)</label>
+              <select class="form-input" id="f_consequence" onchange="PTW.updateRisk()">
+                <option value="1">1 — Negligible</option>
+                <option value="2">2 — Minor</option>
+                <option value="3" selected>3 — Moderate</option>
+                <option value="4">4 — Major</option>
+                <option value="5">5 — Catastrophic</option>
+              </select>
+            </div>
+          </div>
+          <div id="riskDisplay" style="margin:14px 0"></div>
+
+          <div class="section-label" style="margin-top:20px">Identified Hazards</div>
+          <div class="checklist" id="hazardList"></div>
+
+          <div class="section-label" style="margin-top:20px">Personal Protective Equipment Required</div>
+          <div class="checklist" id="ppeList"></div>
+
+          <div class="section-label" style="margin-top:20px">Additional Control Measures</div>
+          <div class="form-group">
+            <textarea class="form-input" id="f_controls" rows="3" placeholder="Specific controls, safe work procedures, method statements…"></textarea>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step-panel" id="panel3">
+          <div class="notice notice--warning">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            All checklist items must be confirmed prior to work commencement.
+          </div>
+          <div class="section-label" style="margin-top:16px">Pre-Work Safety Checklist</div>
+          <div class="checklist" id="preWorkList"></div>
+          <div class="section-label" style="margin-top:24px">Approval Route</div>
+          <div id="approvalRouteDisplay"></div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step-panel" id="panel4">
+          <div class="notice notice--info">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            By signing, I declare all information is accurate and all control measures will be in place before work begins.
+          </div>
+          <div class="form-grid" style="margin-top:20px">
+            <div class="form-group">
+              <label class="form-label">Full Name (confirmation) <span class="req">*</span></label>
+              <input class="form-input" type="text" id="f_sigName" placeholder="Type your full name to confirm" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Date &amp; Time</label>
+              <input class="form-input" type="text" id="f_sigDate" readonly />
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:16px">
+            <label class="form-label">Draw Signature <span class="req">*</span></label>
+            <div class="sig-pad-wrap">
+              <canvas id="sigCanvas" class="sig-pad"></canvas>
+              <div class="sig-pad-hint" id="sigHint">✏️ Sign here</div>
+            </div>
+            <button class="btn btn-ghost btn-sm" style="margin-top:6px" onclick="PTW.clearSig('sigCanvas','sigHint')">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="prevBtn" onclick="PTW.step(-1)" style="display:none">← Back</button>
+        <button class="btn btn-ghost" onclick="PTW.closeModal('newPermitModal')">Cancel</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="PTW.step(1)">Continue →</button>
+        <button class="btn btn-success" id="submitBtn" onclick="PTW.submitPermit()" style="display:none">Submit Permit ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPROVE/REJECT MODAL -->
+  <div class="modal-overlay" id="approveModal" style="display:none" onclick="PTW.modalOverlayClick(event,'approveModal')">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <div class="modal-icon" id="approveIcon">✓</div>
+          <div>
+            <div class="modal-title" id="approveTitle">Approve Permit</div>
+            <div class="modal-subtitle" id="approveSubtitle"></div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="PTW.closeModal('approveModal')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="approveNotice"></div>
+        <div class="form-grid" style="margin-top:16px">
+          <div class="form-group">
+            <label class="form-label">Your Full Name <span class="req">*</span></label>
+            <input class="form-input" type="text" id="ap_name" placeholder="Enter your full name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Your Role / Title</label>
+            <input class="form-input" type="text" id="ap_role" placeholder="e.g. Safety Officer, Area Manager" />
+          </div>
+          <div class="form-group span-2">
+            <label class="form-label">Comments</label>
+            <textarea class="form-input" id="ap_comment" rows="2" placeholder="Any conditions, remarks or observations…"></textarea>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:14px">
+          <label class="form-label">Draw Signature <span class="req">*</span></label>
+          <div class="sig-pad-wrap">
+            <canvas id="apSigCanvas" class="sig-pad"></canvas>
+            <div class="sig-pad-hint" id="apSigHint">✏️ Sign here</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:6px" onclick="PTW.clearSig('apSigCanvas','apSigHint')">Clear</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="PTW.closeModal('approveModal')">Cancel</button>
+        <button class="btn btn-danger" id="rejectActionBtn" onclick="PTW.doAction('reject')" style="display:none">✗ Reject</button>
+        <button class="btn btn-success" id="approveActionBtn" onclick="PTW.doAction('approve')">✓ Approve</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAIL MODAL -->
+  <div class="modal-overlay" id="detailModal" style="display:none" onclick="PTW.modalOverlayClick(event,'detailModal')">
+    <div class="modal modal--wide modal--detail">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <div class="modal-icon" id="detailIcon">📋</div>
+          <div>
+            <div class="modal-title" id="detailTitle">Permit Details</div>
+            <div class="modal-subtitle" id="detailSubtitle"></div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="PTW.closeModal('detailModal')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="detailBody"></div>
+      <div class="modal-footer" id="detailFooter"></div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/workflows.js"></script>
+  <script src="js/forms.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/init.js"></script>
+</body>
+</html>
