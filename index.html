@@ -299,27 +299,7 @@ body.submit-mode .layout{display:none}
   .print-check-box{width:12px;height:12px;border:1.5px solid #555;flex-shrink:0;margin-top:2px}
   .print-risk-badge{display:inline-block;padding:3px 12px;border-radius:100px;font-weight:700;font-size:10pt}
 }
-/* ── ROLE GATE OVERLAY ── */
-.role-gate{position:fixed;inset:0;z-index:9998;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);display:flex;align-items:center;justify-content:center;padding:20px}
-.role-gate-card{background:#fff;border-radius:16px;padding:36px 40px;width:100%;max-width:420px;box-shadow:0 32px 80px rgba(0,0,0,.4);text-align:center}
-.role-gate-logo{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#EE4D2D,#F06030);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
-.role-gate-title{font-size:20px;font-weight:800;color:var(--t1);margin-bottom:6px}
-.role-gate-sub{font-size:13px;color:var(--t2);margin-bottom:24px;line-height:1.5}
-.role-gate-btns{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
-.role-gate-btn{padding:11px 18px;border-radius:var(--rs);font-size:14px;font-weight:700;border:none;cursor:pointer;transition:all .15s;font-family:inherit}
-.rgb-contractor{background:var(--ol);color:var(--od);border:2px solid var(--o)}
-.rgb-contractor:hover{background:var(--o);color:#fff}
-.rgb-admin{background:var(--t1);color:#fff}
-.rgb-admin:hover{background:#000}
-.role-gate-divider{display:flex;align-items:center;gap:10px;margin:4px 0;font-size:11px;color:var(--t3)}
-.role-gate-divider::before,.role-gate-divider::after{content:'';flex:1;height:1px;background:var(--bor)}
-.pin-gate{display:none;margin-top:14px}
-.pin-gate.on{display:block}
-.pin-gate-title{font-size:13px;font-weight:700;color:var(--t2);margin-bottom:10px}
-.pin-err{font-size:12px;color:var(--red);margin-top:8px;display:none}
-/* Hide dashboard until authenticated */
-body:not(.submit-mode) .topbar{display:none}
-body:not(.submit-mode) .layout{display:none}
+
 #printArea{display:none}
 @media(max-width:900px){
   .sidebar{display:none}.dash-grid,.agrid{grid-template-columns:1fr}
@@ -331,41 +311,6 @@ body:not(.submit-mode) .layout{display:none}
 </head>
 <body>
 
-<!-- ═══ ROLE GATE ═══ -->
-<div id="roleGate" class="role-gate">
-  <div class="role-gate-card">
-    <div class="role-gate-logo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-    <div class="role-gate-title">PTW System</div>
-    <div class="role-gate-sub" id="gateSubText">Who are you? Select your access level to continue.</div>
-
-    <!-- STEP 1: role selection buttons -->
-    <div class="role-gate-btns" id="gateBtns">
-      <button class="role-gate-btn rgb-contractor" onclick="RoleGate.enterContractor()">🪖 Contractor — Submit a Permit</button>
-      <div class="role-gate-divider">or</div>
-      <button class="role-gate-btn" style="background:var(--elec-l);color:var(--elec);border:2px solid var(--elec)" onclick="RoleGate.showApproverEntry()">✅ Approver — Review &amp; Sign Off</button>
-      <div class="role-gate-divider">or</div>
-      <button class="role-gate-btn rgb-admin" onclick="RoleGate.showPinEntry('admin')">🔐 Admin — Full Dashboard</button>
-    </div>
-
-    <!-- STEP 2a: Approver email verification -->
-    <div class="pin-gate" id="approverGate">
-      <div class="pin-gate-title">Enter your approver email address</div>
-      <input type="email" class="fi" id="gateEmail" placeholder="your.name@company.com" style="margin-bottom:8px" onkeydown="if(event.key==='Enter')RoleGate.submitEmail()"/>
-      <button class="btn btn-primary" style="width:100%;background:var(--elec);border-color:var(--elec)" onclick="RoleGate.submitEmail()">Verify &amp; Enter →</button>
-      <div class="pin-err" id="gateEmailErr">Email not recognised as an approver. Check spelling or contact admin.</div>
-      <button class="btn btn-ghost btn-sm" style="margin-top:10px;width:100%" onclick="RoleGate.back()">← Back</button>
-    </div>
-
-    <!-- STEP 2b: Admin PIN -->
-    <div class="pin-gate" id="pinGate">
-      <div class="pin-gate-title">Enter Admin PIN to continue</div>
-      <input type="password" class="fi" id="gatePin" placeholder="••••••" maxlength="8" style="text-align:center;letter-spacing:8px;font-size:22px;margin-bottom:8px" onkeydown="if(event.key==='Enter')RoleGate.submitPin()"/>
-      <button class="btn btn-primary" style="width:100%" onclick="RoleGate.submitPin()">Unlock Dashboard →</button>
-      <div class="pin-err" id="gatePinErr">Incorrect PIN. Please try again.</div>
-      <button class="btn btn-ghost btn-sm" style="margin-top:10px;width:100%" onclick="RoleGate.back()">← Back</button>
-    </div>
-  </div>
-</div>
 
 <header class="topbar">
   <div class="topbar-in">
@@ -492,22 +437,7 @@ body:not(.submit-mode) .layout{display:none}
     <!-- ADMIN -->
     <div class="pg" id="pg-admin">
       <div class="pgh"><div><div class="pgh-title">🔐 Admin</div><div class="pgh-sub">Delete controls &amp; approver email configuration</div></div></div>
-      <div class="card" style="max-width:640px;margin-bottom:20px">
-        <div class="card-hd"><span class="card-title">📧 Approver Email Addresses</span></div>
-        <div class="card-body">
-          <div class="notice n-info" style="margin-bottom:16px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Enter email addresses for each approver role. After each stage approval, the next approver will be notified automatically via Google Apps Script. These settings persist only for this browser session — edit APPROVER_EMAILS in the JS to make permanent.</div>
-          <div class="fgrid">
-            <div class="fg"><label class="flbl">🪜 WAH Assessor</label><input class="fi" type="email" id="em_wah_assess" placeholder="wah.assessor@company.com" oninput="APPROVER_EMAILS.wah_assess=this.value"/></div>
-            <div class="fg"><label class="flbl">🕳️ CS Entry Supervisor</label><input class="fi" type="email" id="em_cs_super" placeholder="cs.supervisor@company.com" oninput="APPROVER_EMAILS.cs_super=this.value"/></div>
-            <div class="fg"><label class="flbl">🔒 Electrical Safety Officer</label><input class="fi" type="email" id="em_eso" placeholder="eso@company.com" oninput="APPROVER_EMAILS.eso=this.value"/></div>
-            <div class="fg"><label class="flbl">🔥 Fire Safety Manager</label><input class="fi" type="email" id="em_fire_mgr" placeholder="fire.manager@company.com" oninput="APPROVER_EMAILS.fire_mgr=this.value"/></div>
-            <div class="fg"><label class="flbl">⚡ Licensed Electrical Worker</label><input class="fi" type="email" id="em_lew" placeholder="lew@company.com" oninput="APPROVER_EMAILS.lew=this.value"/></div>
-            <div class="fg"><label class="flbl">🟠 HSE Manager (Stage 2)</label><input class="fi" type="email" id="em_hse_officer" placeholder="hse.manager@company.com" oninput="APPROVER_EMAILS.hse_officer=this.value"/></div>
-            <div class="fg full"><label class="flbl">🟢 Area Manager (Final Stage)</label><input class="fi" type="email" id="em_area_mgr" placeholder="area.manager@company.com" oninput="APPROVER_EMAILS.area_mgr=this.value"/></div>
-          </div>
-          <button class="btn btn-success" style="margin-top:14px;width:100%" onclick="App.saveEmails()">💾 Save Email Settings</button>
-        </div>
-      </div>
+     
       <div class="card" style="max-width:480px">
         <div class="card-hd"><span class="card-title">Admin PIN</span></div>
         <div class="card-body">
@@ -972,105 +902,21 @@ var currentApproverEmail = null; // Set when approver verifies by email
 var currentApproverRoleKey = null; // The APPROVER_EMAILS key matching their email
 
 var RoleGate = {
-  init: function(){
-    if(isSubmitMode()){document.getElementById('roleGate').style.display='none';return;}
-    // Gate shown; topbar/layout hidden via CSS until unlocked
-  },
- enterContractor: function(){
-   currentRole = 'contractor';
-   this._unlockDashboard();
-   // Show sidebar with permit type navigation
-   document.querySelector('.sidebar').style.display='flex';
-   document.getElementById('topNewPermitBtn').style.display='flex';
-   // Show the type selector page by default
-   App.nav('t-WAH', document.querySelector('.ni-type'));
- },
-  showApproverEntry: function(){
-    document.getElementById('gateBtns').style.display='none';
-    document.getElementById('approverGate').classList.add('on');
-    document.getElementById('gateSubText').textContent='Enter the email address registered for your approver role.';
-    setTimeout(function(){document.getElementById('gateEmail').focus();},100);
-  },
-
-  showPinEntry: function(){
-    document.getElementById('gateBtns').style.display='none';
-    document.getElementById('pinGate').classList.add('on');
-    document.getElementById('gateSubText').textContent='Admin access — enter your PIN.';
-    setTimeout(function(){document.getElementById('gatePin').focus();},100);
-  },
-
-  back: function(){
-    document.getElementById('gateBtns').style.display='flex';
-    document.getElementById('approverGate').classList.remove('on');
-    document.getElementById('pinGate').classList.remove('on');
-    document.getElementById('gateSubText').textContent='Who are you? Select your access level to continue.';
-    document.getElementById('gateEmail').value='';
-    document.getElementById('gatePin').value='';
-    document.getElementById('gateEmailErr').style.display='none';
-    document.getElementById('gatePinErr').style.display='none';
-  },
-
-  submitEmail: function(){
-    var email = document.getElementById('gateEmail').value.trim().toLowerCase();
-    var err = document.getElementById('gateEmailErr');
-    // Find which approver key matches the entered email
-    var matchKey = null;
-    Object.keys(APPROVER_EMAILS).forEach(function(k){
-      if(APPROVER_EMAILS[k] && APPROVER_EMAILS[k].trim().toLowerCase() === email) matchKey = k;
-    });
-    if(!matchKey){
-      err.style.display='block';
-      document.getElementById('gateEmail').focus();
-      return;
-    }
-    currentRole = 'approver';
-    currentApproverEmail = email;
-    currentApproverRoleKey = matchKey;
-    this._unlockDashboard();
-    // Navigate straight to the filtered approvals view
-    App.renderApproverView();
-  },
-
-  submitPin: function(){
-    var pin = document.getElementById('gatePin').value;
-    var err = document.getElementById('gatePinErr');
-    if(pin === DASHBOARD_PIN){
-      currentRole = 'admin';
-      this._unlockDashboard();
-      App.renderDash();
-      App.renderSettings();
-    } else {
-      err.style.display='block';
-      document.getElementById('gatePin').value='';
-      document.getElementById('gatePin').focus();
-    }
-  },
-
-  _unlockDashboard: function(){
-    document.getElementById('roleGate').style.display='none';
-    var topbar=document.querySelector('.topbar');
-    var layout=document.querySelector('.layout');
-    if(topbar)topbar.style.display='block';
-    if(layout)layout.style.display='flex';
-    if(currentRole==='approver'){
-      // Hide sidebar and new-permit button — approver sees only their queue
-      document.querySelector('.sidebar').style.display='none';
-      var nb=document.getElementById('topNewPermitBtn');
-      if(nb)nb.style.display='none';
-      // Show role pill with matched role label
-      var pill=document.getElementById('rolePill');
-      var pillLbl=document.getElementById('rolePillLbl');
-      if(pill&&pillLbl){
-        // Find a stage with this key to get the role label
-        var roleLabel='Approver';
-        Object.values(C.wf).forEach(function(wf){
-          wf.stages.forEach(function(s){if(s.key===currentApproverRoleKey)roleLabel=s.role;});
-        });
-        pillLbl.textContent='✅ '+roleLabel;
-        pill.style.display='flex';
-      }
-    }
-  },
+ init: function(){
+   // Role gate removed — direct access to dashboard
+   if(isSubmitMode()){return;}
+   
+   // Show dashboard immediately (no authentication)
+   var topbar=document.querySelector('.topbar');
+   var layout=document.querySelector('.layout');
+   if(topbar)topbar.style.display='block';
+   if(layout)layout.style.display='flex';
+   
+   // Initialize app
+   document.getElementById('roleGate').style.display='none';
+   App.renderDash();
+   App.renderSettings();
+ }
 };
 
 
@@ -1506,17 +1352,10 @@ var App={
   },
 
   // ── ADMIN / DELETE ──
-  renderAdmin:function(){
-    document.getElementById('adminUserList').innerHTML=ADMIN_CONFIG.users.map(function(u){return'👤 '+u+'<br>';}).join('');
-    // Populate email fields with current values
-    var keys=['wah_assess','cs_super','eso','fire_mgr','lew','hse_officer','area_mgr'];
-    keys.forEach(function(k){var el=document.getElementById('em_'+k);if(el)el.value=APPROVER_EMAILS[k]||'';});
-  },
-  saveEmails:function(){
-    var keys=['wah_assess','cs_super','eso','fire_mgr','lew','hse_officer','area_mgr'];
-    keys.forEach(function(k){var el=document.getElementById('em_'+k);if(el)APPROVER_EMAILS[k]=el.value.trim();});
-    toast('Email settings saved for this session','ok');
-  },
+ renderAdmin:function(){
+   document.getElementById('adminUserList').innerHTML=ADMIN_CONFIG.users.map(function(u){return'👤 '+u+'<br>';}).join('');
+ },
+ 
   unlockAdmin:function(){
     var pin=document.getElementById('adminPin').value;
     var err=document.getElementById('adminPinErr');
@@ -1831,19 +1670,16 @@ function resetSubmitMode(){
   document.getElementById('submitFormInner').style.display='block';
   App.openNewPermit();
 }
-
 document.addEventListener('DOMContentLoaded',function(){
-  document.getElementById('dashDate').textContent=new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  var today=new Date().toISOString().split('T')[0];
-  ['f_sd','f_ed'].forEach(function(id){var e=document.getElementById(id);if(e)e.value=today;});
+ // ... existing code ...
+ 
+ if(isSubmitMode()){
+   initSubmitMode();
+   return;
+ }
 
-  if(isSubmitMode()){
-    initSubmitMode();
-    return; // skip dashboard init entirely
-  }
-
-  // Show the role gate — it will call App.renderDash() after PIN verified
-  RoleGate.init();
+ // Initialize dashboard directly
+ RoleGate.init();
 
   // Pre-build workflow diagrams so they're ready once admin unlocks
   Object.keys(C.wf).forEach(function(type){
