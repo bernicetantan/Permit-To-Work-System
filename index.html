@@ -976,11 +976,15 @@ var RoleGate = {
     if(isSubmitMode()){document.getElementById('roleGate').style.display='none';return;}
     // Gate shown; topbar/layout hidden via CSS until unlocked
   },
-
-  enterContractor: function(){
-    window.location.href = window.location.pathname + '?view=submit';
-  },
-
+enterContractor: function(){
+   currentRole = 'contractor';
+   this._unlockDashboard();
+   // Show sidebar with permit type navigation
+   document.querySelector('.sidebar').style.display='flex';
+   document.getElementById('topNewPermitBtn').style.display='flex';
+// Show the type selector page by default
+   App.nav('t-WAH', document.querySelector('.ni-type'));
+ },
   showApproverEntry: function(){
     document.getElementById('gateBtns').style.display='none';
     document.getElementById('approverGate').classList.add('on');
