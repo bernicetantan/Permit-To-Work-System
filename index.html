@@ -404,7 +404,11 @@ body.submit-mode .layout{display:none}
   </div>
 </div>
       <div class="stats" id="dashStats"></div>
-     
+      <div class="gs-banner"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>Every permit is saved as one row in Google Sheets — status and approvals update in-place. RA and Method Statement files are uploaded to Google Drive (folder: <strong>PTW System Attachments</strong>) with clickable hyperlinks written back into the sheet. If a file upload shows a CORS warning in the browser console, the upload still completed — verify by opening Google Drive and checking the <em>PTW System Attachments</em> folder.</div>
+      <div class="dash-grid" style="margin-bottom:16px">
+        <div class="card"><div class="card-hd"><span class="card-title">Recent Permits</span><button class="btn btn-ghost btn-sm" onclick="App.nav('permits',document.querySelector('[onclick*=permits]'))">View All →</button></div><div class="tw"><table class="tbl"><thead><tr><th>ID</th><th>Type</th><th>Requester</th><th>Country</th><th>Location</th><th>Risk</th><th>Status</th><th>Date</th></tr></thead><tbody id="recentBody"><tr><td colspan="8" class="empty-row">No permits yet.</td></tr></tbody></table></div></div>
+        <div class="card"><div class="card-hd"><span class="card-title">By Type</span></div><div class="card-body" id="typeChart"></div></div>
+      </div>
       <div class="card"><div class="card-hd"><span class="card-title">⏳ Pending Approval</span><span id="pendCount" style="font-size:12px;font-weight:700;color:var(--o)">0 pending</span></div><div class="card-body" id="pendList"><div class="empty-sm">No permits awaiting approval.</div></div></div>
     </div>
 
@@ -628,7 +632,7 @@ body.submit-mode .layout{display:none}
 // ═══════════════════════════════════════════════════════════════
 // APPS SCRIPT URL
 // ═══════════════════════════════════════════════════════════════
-var SHEET_URL = 'https://script.google.com/a/macros/shopee.com/s/AKfycbwyy-CQa7FmdHwJsV9PIqV6Ez6m4Yqumzjlx3Um1dpVEvzsxvyj7Rog4S0jrZc2Q_LE/exec';
+var SHEET_URL = 'https://script.google.com/a/macros/shopee.com/s/AKfycbzmh9cpntzD2V-A6pbpeNsM2ZHdE6BVMZ6rO-Uq2lAonIOHowvBsXwY_RyVk2IEa0xr/exec';
 
 // ═══════════════════════════════════════════════════════════════
 // ADMIN CONFIG — change PIN and add authorised users here
