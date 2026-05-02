@@ -381,8 +381,6 @@ body.submit-mode .layout{display:none}
         <button class="ni ni-type" onclick="App.nav('t-LOTO',this)"><span class="tdot" style="background:var(--loto)"></span>LOTO / Haz. Energy</button>
         <button class="ni ni-type" onclick="App.nav('t-HW',this)"><span class="tdot" style="background:var(--hw)"></span>Hot Work</button>
         <button class="ni ni-type" onclick="App.nav('t-ELEC',this)"><span class="tdot" style="background:var(--elec)"></span>Electrical Work</button>
-        <button class="ni ni-type" onclick="App.nav('t-CONSTR',this)"><span class="tdot" style="background:#4A5568"></span>Construction</button>
-        <button class="ni ni-type" onclick="App.nav('t-LIFT',this)"><span class="tdot" style="background:#744210"></span>Material Handling</button>
       </div>
       <div class="nsec">
         <span class="nslbl">System</span>
@@ -437,17 +435,15 @@ body.submit-mode .layout{display:none}
         <div class="card-body">
           <div class="notice n-info" style="margin-bottom:16px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Enter email addresses for each approver role. After each stage approval, the next approver will be notified automatically via Google Apps Script. These settings persist only for this browser session — edit APPROVER_EMAILS in the JS to make permanent.</div>
           <div class="fgrid">
-            <div class="slbl" style="margin-bottom:6px;color:var(--t3);font-size:10px;text-transform:uppercase;letter-spacing:.07em">Stage 1 — Specialists (per permit type)</div>
-            <div class="fg"><label class="flbl">🪜 WAH Specialist / Assessor</label><input class="fi" type="email" id="em_wah_assess" placeholder="wah.assessor@shopee.com" oninput="APPROVER_EMAILS.wah_assess=this.value"/></div>
-            <div class="fg"><label class="flbl">🕳️ CS Entry Supervisor</label><input class="fi" type="email" id="em_cs_super" placeholder="cs.supervisor@shopee.com" oninput="APPROVER_EMAILS.cs_super=this.value"/></div>
+            <div class="slbl" style="margin-bottom:6px;grid-column:1/-1;color:var(--t3);font-size:10px;text-transform:uppercase;letter-spacing:.07em">Stage 2 — Specialist (per permit type)</div>
+            <div class="notice n-info" style="margin-bottom:10px;font-size:12px;grid-column:1/-1"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>These are <strong>fallback defaults</strong>. Stage 1 (Permit Applicant) is auto-completed from the requester's own sign-off. The primary Stage 2 &amp; 3 addresses are entered by each approver at sign-off — these are used only if left blank.</div>
+            <div class="fg"><label class="flbl">🪜 WAH Specialist / Competent Assessor</label><input class="fi" type="email" id="em_wah_specialist" placeholder="wah.assessor@shopee.com" oninput="APPROVER_EMAILS.wah_specialist=this.value"/></div>
+            <div class="fg"><label class="flbl">🕳️ Confined Space Entry Supervisor</label><input class="fi" type="email" id="em_cs_supervisor" placeholder="cs.supervisor@shopee.com" oninput="APPROVER_EMAILS.cs_supervisor=this.value"/></div>
             <div class="fg"><label class="flbl">🔒 Electrical Safety Officer (LOTO)</label><input class="fi" type="email" id="em_eso" placeholder="eso@shopee.com" oninput="APPROVER_EMAILS.eso=this.value"/></div>
-            <div class="fg"><label class="flbl">🔥 Fire Safety Manager</label><input class="fi" type="email" id="em_fire_mgr" placeholder="fire.mgr@shopee.com" oninput="APPROVER_EMAILS.fire_mgr=this.value"/></div>
+            <div class="fg"><label class="flbl">🔥 Fire Safety Manager (Hot Work)</label><input class="fi" type="email" id="em_fire_safety_mgr" placeholder="fire.mgr@shopee.com" oninput="APPROVER_EMAILS.fire_safety_mgr=this.value"/></div>
             <div class="fg"><label class="flbl">⚡ Licensed Electrical Worker</label><input class="fi" type="email" id="em_lew" placeholder="lew@shopee.com" oninput="APPROVER_EMAILS.lew=this.value"/></div>
-            <div class="fg"><label class="flbl">🏗️ Construction / Site Manager</label><input class="fi" type="email" id="em_constr_mgr" placeholder="site.mgr@shopee.com" oninput="APPROVER_EMAILS.constr_mgr=this.value"/></div>
-            <div class="fg"><label class="flbl">🏋️ Lifting Supervisor</label><input class="fi" type="email" id="em_lift_super" placeholder="lift.supervisor@shopee.com" oninput="APPROVER_EMAILS.lift_super=this.value"/></div>
-            <div class="slbl" style="margin:10px 0 6px;color:var(--t3);font-size:10px;text-transform:uppercase;letter-spacing:.07em">Stage 2 &amp; 3 — All Permit Types (SHOPEE-HSEMS-F20)</div>
-            <div class="fg"><label class="flbl">🟠 Shopee/SPX Coordinator — Permit Applicant (Stage 2)</label><input class="fi" type="email" id="em_coord" placeholder="coordinator@shopee.com" oninput="APPROVER_EMAILS.coord=this.value"/></div>
-            <div class="fg full"><label class="flbl">🟢 HSE Department — Permit Approver (Stage 3 / Final)</label><input class="fi" type="email" id="em_hse_dept" placeholder="hse@shopee.com" oninput="APPROVER_EMAILS.hse_dept=this.value"/></div>
+            <div class="slbl" style="margin:10px 0 6px;grid-column:1/-1;color:var(--t3);font-size:10px;text-transform:uppercase;letter-spacing:.07em">Stage 3 — Site / Operations Manager (all permit types)</div>
+            <div class="fg full"><label class="flbl">🟢 Site / Operations Manager (final sign-off)</label><input class="fi" type="email" id="em_site_mgr" placeholder="site.manager@shopee.com" oninput="APPROVER_EMAILS.site_mgr=this.value"/></div>
           </div>
           <button class="btn btn-success" style="margin-top:14px;width:100%" onclick="App.saveEmails()">💾 Save Email Settings</button>
         </div>
@@ -486,13 +482,13 @@ body.submit-mode .layout{display:none}
     <div class="mbody">
       <!-- STEP 1 -->
       <div class="spanel on" id="sp1">
-        <div class="notice n-warn" style="margin-bottom:16px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div><strong>SHOPEE-HSEMS-F20 Submission Requirements</strong><ul style="margin:6px 0 0 16px;font-size:12px;line-height:1.7"><li>Submit to HSE at least <strong>5 working days</strong> before planned work</li><li>Risk Assessment (RA) <strong>must</strong> be submitted with this form — conducted by qualified RA team leader</li><li>Contractors must be briefed on in-house rules — briefing records required</li><li>Notify HSE again on the day before work commences</li><li>Display the approved permit (with RA) at the work area throughout the works</li></ul></div></div>
+        <div class="notice n-warn" style="margin-bottom:16px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div><strong>Permit to Work — 3-Stage Approval Process</strong><ul style="margin:6px 0 0 16px;font-size:12px;line-height:1.8"><li><strong>Stage 1 — You (Permit Applicant):</strong> complete this form accurately and sign to submit — this counts as your Stage 1 endorsement</li><li><strong>Stage 2 — Specialist:</strong> physically visits the work site to verify all preconditions are met before issuing the permit</li><li><strong>Stage 3 — Site / Operations Manager:</strong> reviews for concurrent work conflicts and gives final authorisation</li><li>Work must NOT begin until Stages 2 and 3 are both signed — a submitted permit is not an authorised permit</li><li>The approved permit must be displayed at the work area and closed out on completion</li></ul></div></div>
         <div class="slbl">Select Permit Type</div>
-        <div class="tpicker">
+        <div class="tpicker" style="grid-template-columns:repeat(5,1fr)">
           <div class="tc" data-type="WAH" onclick="App.selType('WAH',this)"><div class="tc-ico">🪜</div><div class="tc-name">Work at Height</div><div class="tc-desc">≥ 2 m elevation</div><div class="tc-stg">3-stage</div></div>
           <div class="tc" data-type="CS" onclick="App.selType('CS',this)"><div class="tc-ico">🕳️</div><div class="tc-name">Confined Space</div><div class="tc-desc">Enclosed areas</div><div class="tc-stg">3-stage</div></div>
-          <div class="tc" data-type="LOTO" onclick="App.selType('LOTO',this)"><div class="tc-ico">🔒</div><div class="tc-name">LOTO</div><div class="tc-desc">Lockout / Tagout</div><div class="tc-stg">2-stage</div></div>
-          <div class="tc" data-type="HW" onclick="App.selType('HW',this)"><div class="tc-ico">🔥</div><div class="tc-name">Hot Work</div><div class="tc-desc">Welding / cutting</div><div class="tc-stg">2-stage</div></div>
+          <div class="tc" data-type="LOTO" onclick="App.selType('LOTO',this)"><div class="tc-ico">🔒</div><div class="tc-name">LOTO</div><div class="tc-desc">Lockout / Tagout</div><div class="tc-stg">3-stage</div></div>
+          <div class="tc" data-type="HW" onclick="App.selType('HW',this)"><div class="tc-ico">🔥</div><div class="tc-name">Hot Work</div><div class="tc-desc">Welding / cutting</div><div class="tc-stg">3-stage</div></div>
           <div class="tc" data-type="ELEC" onclick="App.selType('ELEC',this)"><div class="tc-ico">⚡</div><div class="tc-name">Electrical</div><div class="tc-desc">Live / isolation</div><div class="tc-stg">3-stage</div></div>
         </div>
         <div id="rnote" style="display:none" class="rnote"></div>
@@ -521,6 +517,14 @@ body.submit-mode .layout{display:none}
           <div class="fg"><label class="flbl">Worker Names / IDs <span class="req">*</span></label><input class="fi" type="text" id="f_wnames" placeholder="Ali, Ravi, John or badge IDs"/></div>
           <div class="fg"><label class="flbl">Planned Start Date &amp; Time <span class="req">*</span></label><div class="irow"><input class="fi" type="date" id="f_sd"/><input class="fi" type="time" id="f_st"/></div></div>
           <div class="fg"><label class="flbl">Planned End Date &amp; Time <span class="req">*</span></label><div class="irow"><input class="fi" type="date" id="f_ed"/><input class="fi" type="time" id="f_et"/></div></div>
+          <div class="fg"><label class="flbl">Permit Validity <span class="req">*</span></label>
+            <select class="fi" id="f_validity">
+              <option value="Single shift (same day)">Single shift (same day)</option>
+              <option value="Multi-day (as per dates above)">Multi-day (as per dates above)</option>
+              <option value="Weekly renewal required">Weekly renewal required</option>
+            </select>
+            <div class="fhint">Work may not continue beyond the approved validity period — a new permit must be submitted and approved.</div>
+          </div>
         </div>
         <div id="tfArea"></div>
       </div>
@@ -609,8 +613,12 @@ body.submit-mode .layout{display:none}
       <div id="apNote"></div>
       <div class="fgrid" style="margin-top:14px">
         <div class="fg"><label class="flbl">Your Full Name <span class="req">*</span></label><input class="fi" type="text" id="ap_name" placeholder="Your full name"/></div>
-        <div class="fg"><label class="flbl">Your Role / Title <span class="req">*</span></label><input class="fi" type="text" id="ap_role" placeholder="e.g. Safety Officer, HSE Manager"/></div>
+        <div class="fg"><label class="flbl">Your Role / Title <span class="req">*</span></label><input class="fi" type="text" id="ap_role" placeholder="e.g. HSE Officer, LEW Licence No."/></div>
         <div class="fg full"><label class="flbl">Comments</label><textarea class="fi" id="ap_cmt" rows="2" placeholder="Conditions, observations or remarks…"></textarea></div>
+        <div class="fg full" id="nextEmailRow">
+          <label class="flbl">Next Approver Email <span class="req">*</span> <span style="font-weight:400;text-transform:none;font-size:10.5px;color:var(--t3)">(enter the email of the person who must sign at the next stage — they will be notified automatically)</span></label>
+          <input class="fi" type="email" id="ap_next_email" placeholder="next.approver@company.com"/>
+        </div>
       </div>
       <div class="fg" style="margin-top:12px"><label class="flbl">Draw Signature <span class="req">*</span></label><div class="sigwrap"><canvas id="apC" class="sigpad"></canvas><div class="sighint" id="apH">✏️ Sign here</div></div><button class="btn btn-ghost btn-sm" style="margin-top:6px" onclick="App.clrSig('apC','apH')">Clear</button></div>
     </div>
@@ -645,7 +653,7 @@ body.submit-mode .layout{display:none}
 // ═══════════════════════════════════════════════════════════════
 // APPS SCRIPT URL
 // ═══════════════════════════════════════════════════════════════
-var SHEET_URL = 'https://script.google.com/a/macros/shopee.com/s/AKfycbwyy-CQa7FmdHwJsV9PIqV6Ez6m4Yqumzjlx3Um1dpVEvzsxvyj7Rog4S0jrZc2Q_LE/exec';
+var SHEET_URL = 'https://script.google.com/a/macros/shopee.com/s/AKfycbzmh9cpntzD2V-A6pbpeNsM2ZHdE6BVMZ6rO-Uq2lAonIOHowvBsXwY_RyVk2IEa0xr/exec';
 
 // ═══════════════════════════════════════════════════════════════
 // ADMIN CONFIG — change PIN and add authorised users here
@@ -668,18 +676,16 @@ var deleteTargetId = null;
 // from Apps Script after each stage approval.
 // ═══════════════════════════════════════════════════════════════
 var APPROVER_EMAILS = {
-  // Stage 1 specialists (per permit type)
-  wah_assess:  '',   // WAH Specialist / Competent Assessor (Stage 1 — Work at Height)
-  cs_super:    '',   // Confined Space Entry Supervisor (Stage 1 — Confined Space)
-  eso:         '',   // Electrical Safety Officer (Stage 1 — LOTO)
-  fire_mgr:    '',   // Fire Safety Manager (Stage 1 — Hot Work)
-  lew:         '',   // Licensed Electrical Worker (Stage 1 — Electrical Work)
-  constr_mgr:  '',   // Construction / Site Manager (Stage 1 — Construction Work)
-  lift_super:  '',   // Lifting Supervisor (Stage 1 — Material Handling)
-  // Stage 2 — all types (SHOPEE-HSEMS-F20)
-  coord:       '',   // Shopee/SPX Coordinator — Permit Applicant (Stage 2 all types)
-  // Stage 3 — all types (SHOPEE-HSEMS-F20)
-  hse_dept:    '',   // HSE Department — Permit Approver (Stage 3 all types)
+  // Stage 1 — Permit Applicant: auto-populated from the requester's own email on submission
+  applicant:        '',   // set dynamically from f_email at submit time
+  // Stage 2 — Specialists (per permit type)
+  wah_specialist:   '',   // WAH Specialist / Competent Assessor
+  cs_supervisor:    '',   // Confined Space Entry Supervisor
+  eso:              '',   // Electrical Safety Officer (LOTO)
+  fire_safety_mgr:  '',   // Fire Safety Manager (Hot Work)
+  lew:              '',   // Licensed Electrical Worker (Electrical)
+  // Stage 3 — Site / Operations Manager (all permit types)
+  site_mgr:         '',   // Site / Operations Manager (final sign-off)
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -694,48 +700,99 @@ var C = {
     LOTO:  {l:'LOTO / Haz. Energy', ico:'🔒', col:'#E65100', bg:'#FFF3E0', bc:'b-LOTO'},
     HW:    {l:'Hot Work',            ico:'🔥', col:'#BF360C', bg:'#FBE9E7', bc:'b-HW'},
     ELEC:  {l:'Electrical Work',     ico:'⚡', col:'#1565C0', bg:'#E3F2FD', bc:'b-ELEC'},
-    CONSTR:{l:'Construction Work',   ico:'🏗️', col:'#4A5568', bg:'#EDF2F7', bc:'b-LOTO'},
-    LIFT:  {l:'Material Handling',   ico:'🏋️', col:'#744210', bg:'#FFFBEB', bc:'b-HW'},
   },
   wf:{
-    // Approval chain per SHOPEE-HSEMS-F20:
-    // Stage 1: Shopee/SPX Coordinator (Permit Applicant) — reviews & endorses
-    // Stage 2: HSE Department (Permit Approver) — final authority
-    // Specialist pre-check (Stage 0.5) is built into each permit's checklist & RA requirement
-    WAH:{name:'Work at Height — 3-Stage (SHOPEE-HSEMS-F20)',stages:[
-      {key:'wah_assess',  role:'WAH Specialist / Competent Assessor', desc:'Verify fall protection plan, anchor points, equipment inspection records and RA submitted by RA-qualified person.', col:'#D32F2F', req:'Hold valid WAH Assessor cert (ICWCI or MOM-equivalent). RA team leader certification must be on file.'},
-      {key:'coord',       role:'Shopee/SPX Coordinator (Permit Applicant)', desc:'Confirm RA submitted, contractor briefed on in-house rules, work period and location correct.', col:'#E65100', req:'Appointed Shopee/SPX Coordinator — per SHOPEE-HSEMS-F20 Section 1'},
-      {key:'hse_dept',    role:'HSE Department (Permit Approver)', desc:'Final HSE sign-off. Permit must be submitted ≥ 5 working days in advance. Approved permit to be displayed at work area.', col:'#1B7A34', req:'HSE Department authorisation required — SHOPEE-HSEMS-F20'},
+    // 3-stage workflow:
+    //   Stage 1 — Permit Applicant (Performing Authority): submits the permit, signs to confirm
+    //             all details are accurate and control measures will be in place.
+    //   Stage 2 — Specialist (type-specific): physically visits the work site, verifies all
+    //             preconditions are met on-site, then signs to issue the permit.
+    //   Stage 3 — Site / Operations Manager: reviews for simultaneous operations conflicts,
+    //             confirms the area is ready and gives final authorisation to proceed.
+    WAH:{name:'Work at Height',stages:[
+      {key:'applicant',
+       role:'Permit Applicant',
+       desc:'Complete all sections of this permit accurately. Confirm the Risk Assessment has been conducted by a qualified RA team leader and that all control measures will be in place before work begins. Sign to submit.',
+       col:'#E65100',
+       req:'The person submitting this permit. Responsible for the accuracy of all information provided and for ensuring control measures are implemented before work starts.'},
+      {key:'wah_specialist',
+       role:'WAH Specialist / Competent Assessor',
+       desc:'Physically visit the work area before signing. Verify fall protection plan, anchor points, access equipment inspection records and harness certification. Confirm RA was completed by a qualified team leader. Issue the permit only once all preconditions are met on-site — remote sign-off is not acceptable.',
+       col:'#D32F2F',
+       req:'Hold valid WAH Assessor certification (ICWCI or MOM-equivalent). Must physically verify site conditions. RA team leader certification must be on file.'},
+      {key:'site_mgr',
+       role:'Site / Operations Manager',
+       desc:'Review for simultaneous operations conflicts. Confirm the area is clear, resources are available, permit conditions are achievable within the validity period, and the approved permit will be displayed at the work area throughout.',
+       col:'#1B7A34',
+       req:'Appointed Site or Operations Manager for the work location. Final authority — work must not begin without this sign-off.'},
     ]},
-    CS:{name:'Confined Space — 3-Stage (SHOPEE-HSEMS-F20)',stages:[
-      {key:'cs_super',    role:'Confined Space Entry Supervisor', desc:'Verify atmospheric tests (O₂, LEL, toxics), standby person assigned, rescue plan and equipment confirmed serviceable.', col:'#6A1B9A', req:'Trained CS Entry Supervisor. Rescue PPE and equipment must be serviceable.'},
-      {key:'coord',       role:'Shopee/SPX Coordinator (Permit Applicant)', desc:'Confirm RA submitted, contractor briefed, adequate rescue plan in place.', col:'#E65100', req:'Appointed Shopee/SPX Coordinator — SHOPEE-HSEMS-F20'},
-      {key:'hse_dept',    role:'HSE Department (Permit Approver)', desc:'Final HSE sign-off. Submit ≥ 5 working days before planned entry. Display approved permit at space entry point.', col:'#1B7A34', req:'HSE Department authorisation required'},
+    CS:{name:'Confined Space',stages:[
+      {key:'applicant',
+       role:'Permit Applicant',
+       desc:'Complete all sections accurately. Confirm atmospheric test equipment is calibrated, standby person is assigned and rescue equipment is staged at the entry point. Sign to submit.',
+       col:'#E65100',
+       req:'The person submitting this permit. Responsible for the accuracy of all information and for pre-entry arrangements.'},
+      {key:'cs_supervisor',
+       role:'Confined Space Entry Supervisor',
+       desc:'Be physically present at the entry point before signing. Verify atmospheric tests (O₂, LEL, toxic gases) are within safe limits, standby person is positioned and briefed, rescue equipment is serviceable and staged, and the communication method is confirmed working.',
+       col:'#6A1B9A',
+       req:'Trained and competent Confined Space Entry Supervisor. Atmospheric monitoring must be continuous throughout entry — not just at the start.'},
+      {key:'site_mgr',
+       role:'Site / Operations Manager',
+       desc:'Review for simultaneous operations conflicts. Confirm rescue plan is adequate, emergency services are aware and the permit is displayed at the space entry point. Give final authorisation for entry.',
+       col:'#1B7A34',
+       req:'Appointed Site or Operations Manager for the work location. Entry must not proceed without this sign-off.'},
     ]},
-    LOTO:{name:'LOTO / Hazardous Energy — 3-Stage (SHOPEE-HSEMS-F20)',stages:[
-      {key:'eso',         role:'Electrical Safety Officer (ESO)', desc:'Verify all energy sources isolated, LOTO register complete, zero-energy state confirmed by approved instrument.', col:'#E65100', req:'Licensed Electrical Safety Officer. Equipment serviceability records required.'},
-      {key:'coord',       role:'Shopee/SPX Coordinator (Permit Applicant)', desc:'Confirm RA submitted, LOTO procedures reviewed, contractor briefed on in-house rules.', col:'#BF360C', req:'Appointed Shopee/SPX Coordinator — SHOPEE-HSEMS-F20'},
-      {key:'hse_dept',    role:'HSE Department (Permit Approver)', desc:'Final HSE sign-off before any maintenance or repair work commences.', col:'#1B7A34', req:'HSE Department authorisation required'},
+    LOTO:{name:'LOTO / Hazardous Energy',stages:[
+      {key:'applicant',
+       role:'Permit Applicant',
+       desc:'Complete all sections accurately. Identify all energy sources, confirm isolation points and list the workers who will apply their own locks. Sign to submit.',
+       col:'#E65100',
+       req:'The person submitting this permit. Responsible for identifying all energy sources and the accuracy of the LOTO register details.'},
+      {key:'eso',
+       role:'Electrical Safety Officer (ESO)',
+       desc:'Physically verify all energy sources are isolated and locked out. Perform the try-out procedure — attempt to start equipment before workers enter. Confirm zero-energy state with an approved test instrument. Verify each worker has applied their own lock to the LOTO device.',
+       col:'#E65100',
+       req:'Licensed Electrical Safety Officer. Zero-energy state must be confirmed by physical test — it cannot be assumed from visual inspection or equipment labels alone.'},
+      {key:'site_mgr',
+       role:'Site / Operations Manager',
+       desc:'Review isolation scope for simultaneous operations conflicts. Confirm adjacent teams are notified, barriers and out-of-service notices are posted, and all stakeholders are aware of the isolation before work begins.',
+       col:'#1B7A34',
+       req:'Appointed Site or Operations Manager. No maintenance or repair work may commence without this sign-off.'},
     ]},
-    HW:{name:'Hot Work — 3-Stage (SHOPEE-HSEMS-F20)',stages:[
-      {key:'fire_mgr',    role:'Fire Safety Manager', desc:'Verify fire watch, extinguisher placement, combustible clearance ≥ 3 m, hot work at designated area or specified location away from flammable material.', col:'#BF360C', req:'Fire Safety Manager qualification. Designated hot work area confirmation required.'},
-      {key:'coord',       role:'Shopee/SPX Coordinator (Permit Applicant)', desc:'Confirm RA submitted, work area and period correct, contractor briefed.', col:'#E65100', req:'Appointed Shopee/SPX Coordinator — SHOPEE-HSEMS-F20'},
-      {key:'hse_dept',    role:'HSE Department (Permit Approver)', desc:'Final HSE sign-off. Submit ≥ 5 working days in advance. Permit to be displayed at the hot work location.', col:'#1B7A34', req:'HSE Department authorisation required'},
+    HW:{name:'Hot Work',stages:[
+      {key:'applicant',
+       role:'Permit Applicant',
+       desc:'Complete all sections accurately. Confirm fire watch arrangements and post-work monitoring period. Describe the exact location, materials and hot work method. Sign to submit.',
+       col:'#E65100',
+       req:'The person submitting this permit. Responsible for accuracy of fire risk information and pre-work fire prevention arrangements.'},
+      {key:'fire_safety_mgr',
+       role:'Fire Safety Manager',
+       desc:'Physically inspect the work area before signing. Confirm: fire watch person assigned and briefed, extinguisher inspected, charged and within 3 m, all combustibles removed or non-combustible shielding in place within 3 m, floor drains sealed. Check 3 m radius above AND below the work point.',
+       col:'#BF360C',
+       req:'Fire Safety Manager qualification. Must physically inspect the area — sparks travel unpredictably. Post-work fire watch duration must be confirmed before issuance.'},
+      {key:'site_mgr',
+       role:'Site / Operations Manager',
+       desc:'Check for simultaneous operations conflicts with nearby flammable materials, gas venting or chemical operations. Confirm adjacent areas and all personnel are notified. Authorise and display permit at the hot work location.',
+       col:'#1B7A34',
+       req:'Appointed Site or Operations Manager. Hot work near flammable operations requires explicit sign-off.'},
     ]},
-    ELEC:{name:'Electrical Work — 3-Stage (SHOPEE-HSEMS-F20)',stages:[
-      {key:'lew',         role:'Licensed Electrical Worker (LEW)', desc:'Verify circuit isolation, voltage confirmed zero with approved indicator, arc flash category assessed, adjacent live parts marked.', col:'#1565C0', req:'Valid EMA LEW licence mandatory. Equipment licenses and competency certificates required.'},
-      {key:'coord',       role:'Shopee/SPX Coordinator (Permit Applicant)', desc:'Confirm RA submitted, isolation scope reviewed, contractor briefed on electrical safety rules.', col:'#E65100', req:'Appointed Shopee/SPX Coordinator — SHOPEE-HSEMS-F20'},
-      {key:'hse_dept',    role:'HSE Department (Permit Approver)', desc:'Final HSE sign-off. Submit ≥ 5 working days in advance.', col:'#1B7A34', req:'HSE Department authorisation required'},
-    ]},
-    CONSTR:{name:'Construction Work — 3-Stage (SHOPEE-HSEMS-F20)',stages:[
-      {key:'constr_mgr',  role:'Construction / Site Manager', desc:'Verify excavation/demolition/piling/tunnelling plans, local construction guidelines compliance, affected parties notified.', col:'#4A5568', req:'Qualified Construction/Site Manager. Local construction guidelines and regulations must be followed.'},
-      {key:'coord',       role:'Shopee/SPX Coordinator (Permit Applicant)', desc:'Confirm RA submitted, management of change documented, contractor briefed.', col:'#E65100', req:'Appointed Shopee/SPX Coordinator — SHOPEE-HSEMS-F20'},
-      {key:'hse_dept',    role:'HSE Department (Permit Approver)', desc:'Final HSE sign-off. Submit ≥ 5 working days in advance. Notify affected parties before starting work.', col:'#1B7A34', req:'HSE Department authorisation required'},
-    ]},
-    LIFT:{name:'Material Handling — 3-Stage (SHOPEE-HSEMS-F20)',stages:[
-      {key:'lift_super',  role:'Lifting Supervisor / Rigger', desc:'Verify lifting plan, crane/hoist/forklift operator competency certificates, equipment licenses, pre-lift inspection complete.', col:'#744210', req:'Competent Lifting Supervisor. Lifting plan, competency certificates and equipment licenses required.'},
-      {key:'coord',       role:'Shopee/SPX Coordinator (Permit Applicant)', desc:'Confirm lifting plan and RA submitted, equipment and operator licenses sighted, contractor briefed.', col:'#E65100', req:'Appointed Shopee/SPX Coordinator — SHOPEE-HSEMS-F20'},
-      {key:'hse_dept',    role:'HSE Department (Permit Approver)', desc:'Final HSE sign-off. Submit ≥ 5 working days in advance.', col:'#1B7A34', req:'HSE Department authorisation required'},
+    ELEC:{name:'Electrical Work',stages:[
+      {key:'applicant',
+       role:'Permit Applicant',
+       desc:'Complete all sections accurately. Identify the circuit, panel reference and scope of isolation. Confirm the LEW and arc flash assessment details. Sign to submit.',
+       col:'#E65100',
+       req:'The person submitting this permit. Responsible for accuracy of circuit identification and isolation scope.'},
+      {key:'lew',
+       role:'Licensed Electrical Worker (LEW)',
+       desc:'Physically test the circuit at the work point with an approved voltage indicator before signing. Confirm zero voltage — do not rely on labels or visual inspection. Assess arc flash category, confirm PPE level, mark and barricade adjacent live parts.',
+       col:'#1565C0',
+       req:'Valid EMA LEW licence mandatory. HV systems require additional wait time for capacitive discharge. Arc flash PPE must match the assessed category before any work begins.'},
+      {key:'site_mgr',
+       role:'Site / Operations Manager',
+       desc:'Review isolation scope for simultaneous operations conflicts with adjacent live circuits and operational systems. Confirm all affected teams are notified. Authorise permit — affix to the panel or switchboard door.',
+       col:'#1B7A34',
+       req:'Appointed Site or Operations Manager. Electrical work affecting operational systems requires explicit sign-off.'},
     ]},
   },
   // tf entries: id, l(abel), t(ype: text/number/select/multi), r(equired), opts/ph/hint
@@ -1152,13 +1209,27 @@ var App={
     apId=id;apStage=stgKey;apMode=mode;
     var p=DB.find(function(x){return x.id===id;});if(!p)return;
     var wf=C.wf[p.type],stg=wf.stages.find(function(s){return s.key===stgKey;});
+    var stageNum=wf.stages.indexOf(stg)+1;
+    var nextStg=wf.stages[stageNum]; // undefined if last stage
     document.getElementById('apIco').textContent=mode==='reject'?'✗':'✓';
     document.getElementById('apTitle').textContent=mode==='reject'?'Reject — '+id:stg.role;
     document.getElementById('apSub').textContent=C.types[p.type].l+' · '+p.requester+' · '+p.company;
     document.getElementById('apNote').innerHTML=mode==='reject'
       ?'<div class="notice n-danger" style="margin-bottom:12px">⚠️ You are about to <strong>reject</strong> this permit. State reason clearly.</div>'
-      :'<div class="notice n-info" style="margin-bottom:12px">ℹ️ <strong>'+stg.role+'</strong><br><small style="opacity:.8">'+stg.req+'</small></div>';
-    ['ap_name','ap_role','ap_cmt'].forEach(function(id){document.getElementById(id).value='';});
+      :'<div class="notice n-info" style="margin-bottom:12px">ℹ️ <strong>Stage '+stageNum+' of '+wf.stages.length+': '+stg.role+'</strong><br><small style="opacity:.8">'+stg.req+'</small></div>';
+    ['ap_name','ap_role','ap_cmt','ap_next_email'].forEach(function(id){document.getElementById(id).value='';});
+    // Show next email field only when there is a next stage and action is approve
+    var nextRow=document.getElementById('nextEmailRow');
+    if(nextRow){
+      var showNext=(mode==='approve'&&nextStg);
+      nextRow.style.display=showNext?'':'none';
+      if(showNext){
+        // Pre-fill from configured fallback email if available
+        var fallbackEmail=APPROVER_EMAILS[nextStg.key]||'';
+        document.getElementById('ap_next_email').value=fallbackEmail;
+        document.getElementById('ap_next_email').placeholder='Email of '+nextStg.role;
+      }
+    }
     document.getElementById('rejB').style.display=mode==='reject'?'inline-flex':'none';
     document.getElementById('apB').style.display=mode==='approve'?'inline-flex':'none';
     document.getElementById('mAppr').style.display='flex';
@@ -1181,21 +1252,26 @@ var App={
     var stageNum=wf.stages.indexOf(stg)+1;
     var nextStg=wf.stages[stageNum]; // undefined if last stage
     var nextStageKey=nextStg?nextStg.key:'none';
+    // Next approver email: entered by this approver in the form (they define who's next)
+    var nextEmail='';
+    if(action==='approve'&&nextStg){
+      nextEmail=document.getElementById('ap_next_email').value.trim();
+      if(!nextEmail){toast('Please enter the email of the next approver ('+nextStg.role+')','err');return;}
+    }
 
     if(action==='reject'){
       p.status='rejected';
       p.notes.push('REJECTED by '+nm+' ('+role+'): '+cmt+' — '+now);
-      gsSync({action:'approve',permitId:p.id,type:p.type,typeLabel:C.types[p.type].l,requester:p.requester,company:p.company,location:p.loc,description:p.desc,stageNum:stageNum,stageRole:stg.role,approveAction:'reject',approverName:nm,approverRole:role,approvalDate:now,comment:cmt,newStatus:'rejected',nextStageKey:'none'},'Permit Rejected');
+      gsSync({action:'approve',permitId:p.id,type:p.type,typeLabel:C.types[p.type].l,requester:p.requester,company:p.company,location:p.loc,description:p.desc,stageNum:stageNum,stageRole:stg.role,approveAction:'reject',approverName:nm,approverRole:role,approvalDate:now,comment:cmt,newStatus:'rejected',nextStageKey:'none',nextApproverEmail:''},'Permit Rejected');
       toast('Permit '+p.id+' rejected by '+nm,'err');
     }else{
       if(!p.approvals)p.approvals={};
       p.approvals[apStage]={by:nm,role:role,date:now,cmt:cmt,png:apSigPng};
       if(cmt)p.notes.push(cmt+' — '+nm+', '+now);
       var allDone=wf.stages.every(function(s){return !!(p.approvals||{})[s.key];});
-      if(allDone){p.status='approved';toast('Permit '+p.id+' fully approved! Next approver notified.','ok');}
-      else{toast('Stage '+stageNum+' approved by '+nm+'. Next approver ('+nextStg.role+') has been notified.','ok');}
-      var nextEmail=APPROVER_EMAILS[nextStageKey]||'';
-      gsSync({action:'approve',permitId:p.id,type:p.type,typeLabel:C.types[p.type].l,requester:p.requester,company:p.company,location:p.loc,description:p.desc,country:p.country,stageNum:stageNum,stageRole:stg.role,approveAction:'approve',approverName:nm,approverRole:role,approvalDate:now,comment:cmt,newStatus:p.status,nextStageKey:nextStageKey,nextApproverEmail:nextEmail,approverSigPng:apSigPng},'Stage '+stageNum+' Approved');
+      if(allDone){p.status='approved';toast('Permit '+p.id+' fully approved!','ok');}
+      else{toast('Stage '+stageNum+' approved by '+nm+'. Email notification sent to '+nextStg.role+'.','ok');}
+      gsSync({action:'approve',permitId:p.id,type:p.type,typeLabel:C.types[p.type].l,requester:p.requester,company:p.company,location:p.loc,description:p.desc,country:p.country,stageNum:stageNum,stageRole:stg.role,approveAction:'approve',approverName:nm,approverRole:role,approvalDate:now,comment:cmt,newStatus:p.status,nextStageKey:nextStageKey,nextStageRole:nextStg?nextStg.role:'',nextApproverEmail:nextEmail,approverSigPng:apSigPng},'Stage '+stageNum+' Approved');
     }
     this.closeM('mAppr');refrAll();
     if(detId===apId)this.openDet(apId);
@@ -1314,23 +1390,34 @@ var App={
       et:document.getElementById('f_et').value,
       risk:risk,status:'pending',date:ds,sigPng:sigPng,
       ctrl:document.getElementById('f_ctrl').value.trim(),
-      td:td,approvals:{},sig:nm,notes:[],
+      td:td,sig:nm,notes:[],
       raName:fileData.ra.name,raUrl:'',
       msName:fileData.ms.name,msUrl:'',
+      // Stage 1 (Permit Applicant) is auto-completed at submission time
+      approvals:{
+        applicant:{by:nm,role:'Permit Applicant',date:ds,cmt:'Submitted',png:sigPng}
+      },
     };
     DB.unshift(permit);
     var tfl=C.tf[curType]||[];
+    // stage1Email now targets Stage 2 (specialist), since Stage 1 is auto-completed
+    var stage2Key=C.wf[curType].stages[1]?C.wf[curType].stages[1].key:'';
     var payload={
       action:'submit',id:id,type:curType,typeLabel:C.types[curType].l,
-      risk:risk,requester:permit.requester,email:permit.email,
+      risk:risk,riskScore:(+document.getElementById('f_like').value)*(+document.getElementById('f_cons').value)||'',
+      requester:permit.requester,email:permit.email,
       company:permit.company,contact:permit.contact,country:permit.country,
       location:permit.loc,description:permit.desc,supervisor:permit.sup,
       workers:permit.wct,workerNames:permit.wnames,
       startDate:permit.sd,startTime:permit.st,endDate:permit.ed,endTime:permit.et,
+      validity:permit.validity||'',
       controls:permit.ctrl,date:ds,signature:nm,sigPng:sigPng,
       ra_b64:fileData.ra.b64||'none',ra_mime:fileData.ra.mime||'',ra_name:fileData.ra.name||'',
       ms_b64:fileData.ms.b64||'none',ms_mime:fileData.ms.mime||'',ms_name:fileData.ms.name||'',
-      stage1Email:getStage1Email(curType),
+      // Stage 1 applicant details (auto-completed)
+      stage1ApplicantName:nm,stage1ApplicantEmail:permit.email,stage1Date:ds,
+      // Stage 2 specialist to notify
+      stage1Email:APPROVER_EMAILS[stage2Key]||'',
     };
     tfl.forEach(function(f,i){payload['tf_'+i]=td[f.id]||'';});
     gsSync(payload,'New Permit - '+id);
@@ -1369,11 +1456,11 @@ var App={
   renderAdmin:function(){
     document.getElementById('adminUserList').innerHTML=ADMIN_CONFIG.users.map(function(u){return'👤 '+u+'<br>';}).join('');
     // Populate email fields with current values
-    var keys=['wah_assess','cs_super','eso','fire_mgr','lew','constr_mgr','lift_super','coord','hse_dept'];
+    var keys=['wah_specialist','cs_supervisor','eso','fire_safety_mgr','lew','site_mgr'];
     keys.forEach(function(k){var el=document.getElementById('em_'+k);if(el)el.value=APPROVER_EMAILS[k]||'';});
   },
   saveEmails:function(){
-    var keys=['wah_assess','cs_super','eso','fire_mgr','lew','constr_mgr','lift_super','coord','hse_dept'];
+    var keys=['wah_specialist','cs_supervisor','eso','fire_safety_mgr','lew','site_mgr'];
     keys.forEach(function(k){var el=document.getElementById('em_'+k);if(el)APPROVER_EMAILS[k]=el.value.trim();});
     toast('Email settings saved for this session','ok');
   },
@@ -1433,13 +1520,10 @@ var App={
 // ═══════════════════════════════════════════════════════════════
 // HELPERS
 // ═══════════════════════════════════════════════════════════════
-function getStage1Email(type) {
-  var keyMap={WAH:'wah_assess',CS:'cs_super',LOTO:'eso',HW:'fire_mgr',ELEC:'lew',CONSTR:'constr_mgr',LIFT:'lift_super'};
-  return APPROVER_EMAILS[keyMap[type]||'']||'';
-}
 function nxtStg(p){
   if(p.status!=='pending')return null;
-  return C.wf[p.type].stages.find(function(s){return!(p.approvals||{})[s.key];})||null;
+  // Stage 1 (applicant) is auto-completed at submission — find first non-applicant unapproved stage
+  return C.wf[p.type].stages.find(function(s){return s.key!=='applicant'&&!(p.approvals||{})[s.key];})||null;
 }
 function typeXtraCells(p){
   var d=p.td||{};
@@ -1654,23 +1738,32 @@ function initSubmitMode(){
       sd:document.getElementById('f_sd').value,st:document.getElementById('f_st').value,
       ed:document.getElementById('f_ed').value,et:document.getElementById('f_et').value,
       risk:risk,status:'pending',date:ds,sigPng:sigPng,
+      validity:document.getElementById('f_validity')?document.getElementById('f_validity').value:'',
       ctrl:document.getElementById('f_ctrl').value.trim(),
-      td:td,approvals:{},sig:nm,notes:[],
+      td:td,sig:nm,notes:[],
       raName:fileData.ra.name,raUrl:'',msName:fileData.ms.name,msUrl:'',
+      // Stage 1 (Permit Applicant) auto-completed at submission time
+      approvals:{
+        applicant:{by:nm,role:'Permit Applicant',date:ds,cmt:'Submitted',png:sigPng}
+      },
     };
     DB.unshift(permit);
     var tfl=C.tf[curType]||[];
+    var stage2Key=C.wf[curType].stages[1]?C.wf[curType].stages[1].key:'';
     var payload={
       action:'submit',id:id,type:curType,typeLabel:C.types[curType].l,
-      risk:risk,requester:permit.requester,email:permit.email,
+      risk:risk,riskScore:(+document.getElementById('f_like').value)*(+document.getElementById('f_cons').value)||'',
+      requester:permit.requester,email:permit.email,
       company:permit.company,contact:permit.contact,country:permit.country,
       location:permit.loc,description:permit.desc,supervisor:permit.sup,
       workers:permit.wct,workerNames:permit.wnames,
       startDate:permit.sd,startTime:permit.st,endDate:permit.ed,endTime:permit.et,
+      validity:permit.validity||'',
       controls:permit.ctrl,date:ds,signature:nm,sigPng:sigPng,
       ra_b64:fileData.ra.b64||'none',ra_mime:fileData.ra.mime||'',ra_name:fileData.ra.name||'',
       ms_b64:fileData.ms.b64||'none',ms_mime:fileData.ms.mime||'',ms_name:fileData.ms.name||'',
-      stage1Email:getStage1Email(curType),
+      stage1ApplicantName:nm,stage1ApplicantEmail:permit.email,stage1Date:ds,
+      stage1Email:APPROVER_EMAILS[stage2Key]||'',
     };
     tfl.forEach(function(f,i){payload['tf_'+i]=td[f.id]||'';});
     gsSync(payload,'New Permit - '+id);
